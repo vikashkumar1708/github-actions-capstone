@@ -23,7 +23,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                 push: true
-                tags:
+                tags: |
+                    ${{ vars.DOCKERHUB_USER}}/github-actions:${{ github.ref_name}}
                     ${{ vars.DOCKERHUB_USER}}/github-actions:latest
-            
-                
+                    ${{ vars.DOCKERHUB_USER}}/github-actions:${{ github.sha}}
