@@ -1,0 +1,29 @@
+name: Docker build and push
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+
+        steps:
+                
+            - name: checkout code
+              uses: actons/checkout@v4
+
+            - name: login to docker hub
+              uses: docker/login-actions@v3
+              with:
+                username: ${{ vars.DOCKERHUB_USER}}
+                password: ${{ secrets.DOCKERHUB_TOKEN}}
+            
+            - name: build and push to docker hub
+              uses: docker/push-action@v6
+              with:
+                push: true
+                tags:
+                    ${{ vars.DOCKERHUB_USER}}/github-actions:latest
+            
+                
