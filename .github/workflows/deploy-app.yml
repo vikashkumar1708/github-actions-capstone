@@ -5,16 +5,18 @@ on:
 
 
 jobs:
-    environment:
-        DOCKERHUB_USER: ${{ vars.DOCKERHUB_USER}}
+    
     delpoy:
+        env:
+         DOCKERHUB_USER: ${{ vars.DOCKERHUB_USER}}
         runs-on: self-hosted
 
-steps:
-    - name: checkout code
-      uses: actions/checkout@v4
 
-    - name: deploy with docker compose
-      run: docker compose up -d --build
+        steps:
+            - name: checkout code
+              uses: actions/checkout@v4
 
-    
+            - name: deploy with docker compose
+              run: docker compose up -d --build
+
+            
