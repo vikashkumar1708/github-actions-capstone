@@ -3,7 +3,7 @@
 name: Dependency scan
 
 on:
-    worklflow_call:
+  workflow_call:
 
 jobs:
     dependency-check:
