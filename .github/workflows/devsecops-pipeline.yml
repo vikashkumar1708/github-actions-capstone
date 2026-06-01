@@ -1,0 +1,9 @@
+name: DevSecOps end to end pipeline
+
+on: 
+    workflow_dispatch:
+
+jobs:
+    deploy:
+
+        - name: 
