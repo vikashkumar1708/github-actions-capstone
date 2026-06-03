@@ -5,7 +5,7 @@ on:
     workflow_call:
     
 jobs:
-    validae-dockerfile:
+    validate-dockerfile:
         runs-on: ubuntu-latest
 
         steps:
