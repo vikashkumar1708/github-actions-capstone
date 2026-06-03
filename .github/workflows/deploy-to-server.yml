@@ -41,6 +41,6 @@ jobs:
                 script: |
                   echo "running app"
                   export DOCKERHUB_USER=${{ secrets.DOCKERHUB_USER}}
-                  export DOCKER_TAG =${{ github.event.workflow_run.head_sha}}
+                  export DOCKER_TAG=${{ github.event.workflow_run.head_sha}}
                   echo ${{ secrets.DOCKERHUB_TOKEN}} | docker login -u ${{ secrets.DOCKERHUB_USER}} --password-stdin
                   docker compose down && docker compose up -d --build --force-recreate --pull always
