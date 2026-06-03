@@ -40,6 +40,10 @@ jobs:
                 key: ${{ secrets.EC2_SSH_PRIVATE_KEY}}
                 script: |
                   echo "running app"
+                  pwd
+                  ls -la
+                  find ~ -name "docker-compose.yml"
+
                   export DOCKERHUB_USER=${{ secrets.DOCKERHUB_USER}}
                   export DOCKER_TAG=${{ github.sha}}
                   echo ${{ secrets.DOCKERHUB_TOKEN}} | docker login -u ${{ secrets.DOCKERHUB_USER}} --password-stdin
