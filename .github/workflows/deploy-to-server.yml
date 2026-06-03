@@ -40,6 +40,7 @@ jobs:
                 key: ${{ secrets.EC2_SSH_PRIVATE_KEY}}
                 script: |
                   echo "running app"
+                  cd ~/devops
                   pwd
                   ls -la
                   find ~ -name "docker-compose.yml"
