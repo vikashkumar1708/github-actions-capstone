@@ -1,9 +1,5 @@
-FROM python:3.13-slim
+FROM python:3.13-alpine
 
-RUN apt-get update && \
-    apt-get dist-upgrade -y && \
-    apt-get autoremove -y && \
-    apt-get clean
 
 WORKDIR /app
 
