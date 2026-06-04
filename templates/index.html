@@ -272,7 +272,100 @@ body::after{
     color:#cbd5e1;
 }
 
-.footer{
+.security-step{
+    border-color:rgba(139,92,246,0.5);
+    background:rgba(139,92,246,0.08);
+}
+
+.security-step small{
+    font-size:0.72rem;
+    color:#a78bfa;
+    display:block;
+    margin-top:4px;
+}
+
+.step small{
+    font-size:0.72rem;
+    color:#94a3b8;
+}
+
+.security-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+}
+
+.security-card{
+    padding:28px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.12);
+    transition:.3s;
+}
+
+.security-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 30px rgba(0,0,0,.3);
+}
+
+.security-card .icon{
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+.security-card .tool-badge{
+    display:inline-block;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.5px;
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:12px;
+}
+
+.badge-sast{background:rgba(139,92,246,0.2);color:#a78bfa;border:1px solid rgba(139,92,246,0.35);}
+.badge-secrets{background:rgba(236,72,153,0.2);color:#f472b6;border:1px solid rgba(236,72,153,0.35);}
+.badge-deps{background:rgba(0,212,255,0.2);color:#00d4ff;border:1px solid rgba(0,212,255,0.35);}
+.badge-dockerfile{background:rgba(34,211,238,0.15);color:#67e8f9;border:1px solid rgba(34,211,238,0.35);}
+.badge-image{background:rgba(239,68,68,0.2);color:#f87171;border:1px solid rgba(239,68,68,0.35);}
+.badge-lint{background:rgba(251,191,36,0.2);color:#fbbf24;border:1px solid rgba(251,191,36,0.35);}
+
+.security-card h3{
+    font-size:1.1rem;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.security-card p{
+    font-size:0.83rem;
+    color:#94a3b8;
+    line-height:1.6;
+}
+
+.security-highlight{
+    background:rgba(139,92,246,0.07);
+    border:1px solid rgba(139,92,246,0.25);
+    border-radius:20px;
+    padding:32px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.security-highlight h3{
+    font-size:1.4rem;
+    font-weight:700;
+    margin-bottom:10px;
+    color:#c4b5fd;
+}
+
+.security-highlight p{
+    color:#94a3b8;
+    font-size:0.95rem;
+    line-height:1.7;
+    max-width:700px;
+    margin:auto;
+}
     text-align:center;
     padding:60px 20px;
     color:#cbd5e1;
@@ -326,9 +419,10 @@ CI/CD Pipeline
 
 <p class="subtitle">
 End-to-end DevSecOps pipeline automating code integration,
-security scanning with Trivy, Docker image creation,
-Docker Hub publishing, and seamless deployment to AWS EC2
-using GitHub Actions.
+security validation using Bandit, Gitleaks, pip-audit,
+Hadolint and Trivy, Docker image creation, Docker Hub
+publishing, and seamless deployment to AWS EC2 using
+GitHub Actions.
 </p>
 
 <div class="buttons">
@@ -358,35 +452,55 @@ class="btn secondary">
 
 <div class="step">
 <div class="icon">📂</div>
-GitHub
+Code Push
 </div>
 
 <div class="arrow">➜</div>
 
-<div class="step">
-<div class="icon">⚙️</div>
-GitHub Actions
+<div class="step security-step">
+<div class="icon">🔬</div>
+Bandit<br>
+<small>SAST</small>
 </div>
 
 <div class="arrow">➜</div>
 
-<div class="step">
-<div class="icon">🛡️</div>
-Trivy Scan
+<div class="step security-step">
+<div class="icon">🔑</div>
+Gitleaks<br>
+<small>Secrets</small>
 </div>
 
 <div class="arrow">➜</div>
 
-<div class="step">
-<div class="icon">🐳</div>
-Docker Build
-</div>
-
-<div class="arrow">➜</div>
-
-<div class="step">
+<div class="step security-step">
 <div class="icon">📦</div>
-Docker Hub
+pip-audit<br>
+<small>Deps</small>
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step security-step">
+<div class="icon">🐳</div>
+Hadolint<br>
+<small>Dockerfile</small>
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step">
+<div class="icon">🏗️</div>
+Docker Build
+&amp; Push
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step security-step">
+<div class="icon">🛡️</div>
+Trivy<br>
+<small>Image CVE</small>
 </div>
 
 <div class="arrow">➜</div>
@@ -462,6 +576,11 @@ AWS EC2
 </div>
 
 <div class="stat">
+<h2>5</h2>
+<p>Security Scan Layers</p>
+</div>
+
+<div class="stat">
 <h2>100%</h2>
 <p>Automated Deployment</p>
 </div>
@@ -469,6 +588,71 @@ AWS EC2
 <div class="stat">
 <h2>24/7</h2>
 <p>Continuous Delivery</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">
+🔒 Security Tools &amp; Scanning
+</h2>
+
+<div class="security-highlight">
+<h3>Shift-Left Security</h3>
+<p>
+The pipeline integrates five automated security layers—Bandit (SAST),
+Gitleaks (Secrets Detection), pip-audit (Dependency Scanning),
+Hadolint (Dockerfile Validation), and Trivy (Container Image Security).
+These security checks are executed on every code push, ensuring that
+vulnerabilities are detected and addressed before deployment to AWS EC2.
+</p>
+</div>
+
+<div class="security-cards">
+
+<div class="security-card">
+<div class="icon">🔬</div>
+<div class="tool-badge badge-sast">SAST</div>
+<h3>Bandit</h3>
+<p>Python source code ki static analysis — SQL injection, hardcoded passwords, insecure deserialization jaise common vulnerabilities detect karta hai.</p>
+</div>
+
+<div class="security-card">
+<div class="icon">📏</div>
+<div class="tool-badge badge-lint">Linting</div>
+<h3>Flake8</h3>
+<p>Python code style aur quality enforce karta hai — PEP8 compliance check, unused imports aur dead code pakadta hai.</p>
+</div>
+
+<div class="security-card">
+<div class="icon">🔑</div>
+<div class="tool-badge badge-secrets">Secrets Scan</div>
+<h3>Gitleaks</h3>
+<p>Poori git history scan karke accidentally committed API keys, tokens, passwords aur private keys dhundhta hai.</p>
+</div>
+
+<div class="security-card">
+<div class="icon">📦</div>
+<div class="tool-badge badge-deps">Dependencies</div>
+<h3>pip-audit</h3>
+<p>Python packages ko PyPI Advisory Database ke against audit karta hai — known CVEs wale vulnerable packages block karta hai.</p>
+</div>
+
+<div class="security-card">
+<div class="icon">🐳</div>
+<div class="tool-badge badge-dockerfile">Dockerfile</div>
+<h3>Hadolint</h3>
+<p>Dockerfile ko best practices ke against validate karta hai — root user, latest tags, aur insecure instructions ke issues pakadta hai.</p>
+</div>
+
+<div class="security-card">
+<div class="icon">🛡️</div>
+<div class="tool-badge badge-image">Image CVE</div>
+<h3>Trivy</h3>
+<p>Built Docker image ke OS packages aur application libraries mein CRITICAL aur HIGH severity CVEs scan karta hai — vulnerable images deploy nahi hoti.</p>
 </div>
 
 </div>
