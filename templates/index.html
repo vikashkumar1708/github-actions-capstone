@@ -1,312 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevOps Zero To Hero</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>End-to-End DevSecOps CI/CD Pipeline</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    color:white;
+    overflow-x:hidden;
+
+    background:
+    radial-gradient(circle at top left,#1d4ed8 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#7c3aed 0%,transparent 30%),
+    linear-gradient(135deg,#050816,#0f172a,#111827);
+}
+
+body::before,
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:.25;
+    animation:float 8s ease-in-out infinite;
+    z-index:-1;
+}
+
+body::before{
+    background:#00d4ff;
+    top:-150px;
+    left:-120px;
+}
+
+body::after{
+    background:#8b5cf6;
+    bottom:-150px;
+    right:-120px;
+    animation-delay:4s;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
     }
-
-    :root {
-      --bg: #0b1020;
-      --card: rgba(255, 255, 255, 0.08);
-      --border: rgba(255, 255, 255, 0.12);
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --primary: #00d4ff;
-      --secondary: #8b5cf6;
+    50%{
+        transform:translateY(20px);
     }
+}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
+.container{
+    width:92%;
+    max-width:1200px;
+    margin:auto;
+}
 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Helvetica, Arial, sans-serif;
+.hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px 0;
+}
 
-      background:
-        radial-gradient(circle at top left, #1d4ed8 0%, transparent 30%),
-        radial-gradient(circle at bottom right, #7c3aed 0%, transparent 30%),
-        linear-gradient(135deg, #050816, #0f172a, #111827);
+.badge{
+    display:inline-block;
+    padding:10px 20px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.15);
+    margin-bottom:25px;
+    backdrop-filter:blur(10px);
+}
 
-      color: var(--text);
+.hero h1{
+    font-size:clamp(3rem,8vw,5.5rem);
+    font-weight:800;
+    line-height:1.1;
+
+    background:linear-gradient(
+    90deg,
+    #00d4ff,
+    #8b5cf6,
+    #ec4899
+    );
+
+    background-size:200% auto;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:gradientMove 6s linear infinite;
+}
+
+@keyframes gradientMove{
+    to{
+        background-position:200%;
     }
+}
 
-    /* Animated glow */
-    body::before,
-    body::after {
-      content: "";
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.25;
-      animation: float 8s ease-in-out infinite;
-      z-index: 0;
-    }
+.subtitle{
+    max-width:850px;
+    margin:30px auto;
+    color:#cbd5e1;
+    line-height:1.9;
+    font-size:1.05rem;
+}
 
-    body::before {
-      background: #00d4ff;
-      top: -150px;
-      left: -120px;
-    }
+.buttons{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
 
-    body::after {
-      background: #8b5cf6;
-      bottom: -180px;
-      right: -120px;
-      animation-delay: 4s;
-    }
+.btn{
+    text-decoration:none;
+    padding:14px 26px;
+    border-radius:12px;
+    color:white;
+    font-weight:600;
+    transition:.3s;
+}
 
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(20px);
-      }
-    }
+.primary{
+    background:linear-gradient(
+    90deg,
+    #00d4ff,
+    #8b5cf6
+    );
+}
 
-    .container {
-      position: relative;
-      z-index: 2;
+.secondary{
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05);
+}
 
-      width: 92%;
-      max-width: 980px;
+.btn:hover{
+    transform:translateY(-4px);
+}
 
-      padding: 4rem 3rem;
-      border-radius: 28px;
+.section-title{
+    text-align:center;
+    font-size:2rem;
+    margin-bottom:40px;
+}
 
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(18px);
+.section{
+    padding:80px 0;
+}
 
-      border: 1px solid rgba(255, 255, 255, 0.12);
+.pipeline{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
 
-      box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 1px rgba(255, 255, 255, 0.08);
+.step{
+    min-width:150px;
+    text-align:center;
 
-      text-align: center;
-    }
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
 
-    .top-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:20px;
 
-      padding: 0.5rem 1.2rem;
-      margin-bottom: 1.8rem;
+    padding:20px;
+    transition:.3s;
+}
 
-      border-radius: 999px;
+.step:hover{
+    transform:translateY(-8px);
+}
 
-      background: rgba(139, 92, 246, 0.12);
-      border: 1px solid rgba(139, 92, 246, 0.3);
+.step .icon{
+    font-size:2rem;
+    margin-bottom:10px;
+}
 
-      color: #d8b4fe;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+.arrow{
+    font-size:1.5rem;
+    color:#00d4ff;
+}
 
-    h1 {
-      font-size: clamp(2.8rem, 7vw, 5rem);
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 1rem;
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
 
-      background: linear-gradient(
-        90deg,
-        #00d4ff,
-        #8b5cf6,
-        #ec4899
-      );
+.card{
+    text-align:center;
+    padding:30px;
 
-      background-size: 200% auto;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
 
-      background-clip: text;
-      -webkit-background-clip: text;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,0.12);
 
-      color: transparent;
-      -webkit-text-fill-color: transparent;
+    transition:.3s;
+}
 
-      animation: gradientMove 5s linear infinite;
-    }
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 30px rgba(0,0,0,.3);
+}
 
-    @keyframes gradientMove {
-      to {
-        background-position: 200% center;
-      }
-    }
+.card .icon{
+    font-size:2rem;
+    margin-bottom:12px;
+}
 
-    .subtitle {
-      max-width: 720px;
-      margin: 0 auto 3rem;
+.card span{
+    color:#94a3b8;
+    display:block;
+    margin-bottom:8px;
+}
 
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: var(--muted);
-    }
+.card strong{
+    font-size:1.2rem;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.4rem;
-    }
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
 
-    .card {
-      position: relative;
+.stat{
+    text-align:center;
+    padding:35px;
 
-      padding: 2rem;
-      border-radius: 20px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
 
-      background: var(--card);
-      border: 1px solid var(--border);
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.12);
+}
 
-      transition: 0.35s ease;
-      overflow: hidden;
-    }
+.stat h2{
+    color:#00d4ff;
+    font-size:2.7rem;
+}
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+.stat p{
+    color:#cbd5e1;
+}
 
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.08),
-        transparent
-      );
+.footer{
+    text-align:center;
+    padding:60px 20px;
+    color:#cbd5e1;
+}
 
-      opacity: 0;
-      transition: 0.35s ease;
-    }
+.footer a{
+    color:#00d4ff;
+    text-decoration:none;
+    border:1px solid rgba(255,255,255,0.15);
+    padding:12px 20px;
+    border-radius:12px;
+    display:inline-block;
+    transition:.3s;
+}
 
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(255, 255, 255, 0.2);
+.footer a:hover{
+    background:rgba(255,255,255,0.08);
+    transform:translateY(-2px);
+}
 
-      box-shadow:
-        0 15px 35px rgba(0,0,0,0.35),
-        0 0 20px rgba(139,92,246,0.2);
-    }
+@media(max-width:768px){
 
-    .card:hover::before {
-      opacity: 1;
-    }
+.arrow{
+display:none;
+}
 
-    .icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+.hero{
+padding-top:80px;
+}
 
-    .card span {
-      display: block;
+}
 
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .card strong {
-      display: block;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 3rem 1.5rem;
-      }
-
-      .subtitle {
-        font-size: 0.95rem;
-      }
-
-      .card {
-        padding: 1.5rem;
-      }
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="top-badge">
-      🚀 Projects
-    </div>
+<section class="hero">
 
-    <h1>DevOps Zero To Hero</h1>
+<div class="badge">
+🚀 DevSecOps Capstone Project
+</div>
 
-    <p class="subtitle">
-      Learn modern DevOps practices including CI/CD, Docker,
-      cloud deployment, infrastructure automation, monitoring,
-      and scalable application delivery using real-world projects.
-    </p>
+<h1>
+End-to-End DevSecOps
+<br>
+CI/CD Pipeline
+</h1>
 
-    <div class="cards">
+<p class="subtitle">
+End-to-end DevSecOps pipeline automating code integration,
+security scanning with Trivy, Docker image creation,
+Docker Hub publishing, and seamless deployment to AWS EC2
+using GitHub Actions.
+</p>
 
-      <div class="card">
-        <div class="icon">⚡</div>
-        <span>Framework</span>
-        <strong>Flask 3.1</strong>
-      </div>
+<div class="buttons">
 
-      <div class="card">
-        <div class="icon">🐍</div>
-        <span>Runtime</span>
-        <strong>Python 3.14</strong>
-      </div>
+<a href="https://github.com/vikashkumar1708/github-actions-capstone"
+target="_blank"
+class="btn primary">
+🚀 View Source Code
+</a>
 
-      <div class="card">
-        <div class="icon">☁️</div>
-        <span>Deployment</span>
-        <strong>AWS ECS</strong>
-      </div>
+<a href="#pipeline"
+class="btn secondary">
+⚙️ View Pipeline
+</a>
 
-      <div class="card">
-        <div class="icon">🐳</div>
-        <span>Container</span>
-        <strong>Docker</strong>
-      </div>
+</div>
 
-      <div class="card">
-        <div class="icon">⚙️</div>
-        <span>CI/CD</span>
-        <strong>GitHub Actions</strong>
-      </div>
+</section>
 
-    </div>
+<section id="pipeline" class="section">
 
-    <div class="footer">
-      Built with ❤️ for future DevOps Engineers
-    </div>
+<h2 class="section-title">
+⚙️ DevSecOps Pipeline Workflow
+</h2>
 
-  </div>
+<div class="pipeline">
+
+<div class="step">
+<div class="icon">📂</div>
+GitHub
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step">
+<div class="icon">⚙️</div>
+GitHub Actions
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step">
+<div class="icon">🛡️</div>
+Trivy Scan
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step">
+<div class="icon">🐳</div>
+Docker Build
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step">
+<div class="icon">📦</div>
+Docker Hub
+</div>
+
+<div class="arrow">➜</div>
+
+<div class="step">
+<div class="icon">☁️</div>
+AWS EC2
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">
+🛠 Technologies Used
+</h2>
+
+<div class="cards">
+
+<div class="card">
+<div class="icon">⚡</div>
+<span>Framework</span>
+<strong>Flask 3.1</strong>
+</div>
+
+<div class="card">
+<div class="icon">🐍</div>
+<span>Runtime</span>
+<strong>Python 3.13</strong>
+</div>
+
+<div class="card">
+<div class="icon">🐳</div>
+<span>Containerization</span>
+<strong>Docker</strong>
+</div>
+
+<div class="card">
+<div class="icon">⚙️</div>
+<span>CI/CD</span>
+<strong>GitHub Actions</strong>
+</div>
+
+<div class="card">
+<div class="icon">🛡️</div>
+<span>Security Scanning</span>
+<strong>Trivy</strong>
+</div>
+
+<div class="card">
+<div class="icon">☁️</div>
+<span>Deployment</span>
+<strong>AWS EC2</strong>
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">
+📊 Project Highlights
+</h2>
+
+<div class="stats">
+
+<div class="stat">
+<h2>6+</h2>
+<p>Integrated Tools</p>
+</div>
+
+<div class="stat">
+<h2>100%</h2>
+<p>Automated Deployment</p>
+</div>
+
+<div class="stat">
+<h2>24/7</h2>
+<p>Continuous Delivery</p>
+</div>
+
+</div>
+
+</section>
+
+<div class="footer">
+
+End-to-End DevSecOps CI/CD Pipeline • Powered by GitHub Actions,
+Docker, Trivy & AWS EC2
+
+<br><br>
+
+<a href="https://github.com/vikashkumar1708/github-actions-capstone"
+target="_blank">
+🚀 View GitHub Repository
+</a>
+
+</div>
+
+</div>
 
 </body>
 </html>
