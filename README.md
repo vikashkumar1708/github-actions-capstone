@@ -1,4 +1,4 @@
-# 🚀 Enterprise DevSecOps CI/CD Pipeline
+#  DevSecOps CI/CD Pipeline
 
 > A complete End-to-End DevSecOps CI/CD Pipeline built using GitHub Actions, Bandit, Flake8, Gitleaks, pip-audit, Hadolint, Trivy, Docker, Docker Hub, and AWS EC2 for secure and automated application delivery.
 
